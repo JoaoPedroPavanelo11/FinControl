@@ -2,11 +2,16 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import dns from "dns";
 
-dns.setServers(["1.1.1.1","8.8.8.8"]);
 dotenv.config();
+
+if (process.env.DNS_SERVERS) {
+    dns.setServers(process.env.DNS_SERVERS.split(",").map((server) => server.trim()));
+}
+
 async function dbConnect(){
     await mongoose.connect(
-        process.env.DB_CONECTION_STRING
+        process.env.DB_CONECTION_STRING,
+        { serverSelectionTimeoutMS: 10000 }
     );
     return mongoose.connection;
 }

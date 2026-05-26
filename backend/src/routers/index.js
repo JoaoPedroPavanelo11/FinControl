@@ -1,11 +1,11 @@
 import express from "express";
-import usuarios from "./usuarios.js";
+import UsuarioRouter from "./UsuarioRouter.js";
 
 const routers = (app) =>{
-    routers.use("/").get((req, res)=>{
+    app.get("/", (req, res)=>{
         res.status(200).json({message: "Bem vindo a FinControll"});
     })
-    app.use("/usuarios", usuarios);
+    app.use("/usuarios", UsuarioRouter);
 };
 
 export default routers;
