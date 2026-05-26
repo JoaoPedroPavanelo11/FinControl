@@ -5,7 +5,7 @@ class UsuarioController {
     // Criar um novo usuário
     static async criarUsuario(req, res){
         try{
-            const ultimoUsuario = await Usuario.findOne().sort({ codigo: -1 });
+            const ultimoUsuario = await Usuario.findOne({ codigo: { $type: "number" } }).sort({ codigo: -1 });
             const novoCodigo = ultimoUsuario ? ultimoUsuario.codigo + 1 : 1;
 
             const criarUsuario = await Usuario.create({
@@ -47,6 +47,21 @@ class UsuarioController {
             res.status(400).json({message: "Erro ao editar usuário!", error});
         };
     };
+
+    // Deletar um usuario (Tem que estar colocando o ID do usuario que sera deletado)
+    static async deletarUsuario(req, res){
+        try{
+            const codigo = Number(req.params.codigo);
+            const usuarioDeletado = await Usuario.findOneAndDelete({ codigo });
+            if(!usuarioDeletado){
+                res.status(404).json({message: "Usuario invalido!"});
+            }else{
+                res.status(200).json({message: "Usuário deletado com sucesso!"});
+            }
+        }catch(error){
+            res.status(400).json({message: "Erro ao deletar usuário!", error});
+        }
+    }
 };
 
 export default UsuarioController;

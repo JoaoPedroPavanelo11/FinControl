@@ -11,5 +11,6 @@ router.get("/listar", UsuarioController.mostrarUsuarios);
 router.get("/buscar/:codigo", UsuarioController.mostrarUsuarioEspecifico);
 // Rota para editar um usuário
 router.put("/editar/:codigo", UsuarioController.editarUsuario);
-
+// Rota para deletar um usuário
+router.delete("/deletar/:codigo", UsuarioController.deletarUsuario);
 export default router;
