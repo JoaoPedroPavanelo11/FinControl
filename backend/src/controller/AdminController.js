@@ -13,5 +13,21 @@ class AdminController{
             });
         }
     };
+
+
+    static async deletarUsuario(req, res){
+        try{
+            const {id} = req.params;
+            const deletarUsuario = await Usuario.findOneAndDelete(id);
+            res.status(200).json({message: "Usuário deletado com sucesso!", deletarUsuario});
+        }catch(error){
+            const erros = Object.values(error.errors).map((err) => err.message);
+            res.status(400).json({
+                message: "Erro ao mostrar Usuarios!",
+                erros
+            });
+        }
+    };
 };
+
 export default AdminController;
