@@ -1,16 +1,9 @@
 import express from "express";
-import UsuarioController from "../controller/UsuarioController.js";
+import CadastroUsuarioController from "../controller/CadastroUsuarioController.js";
+import LoginUsuarioController from "../controller/LoginUsuarioController.js";
 
 const router = express.Router();
+router.post("/cadastro", CadastroUsuarioController.criarUsuario);
+router.post("/login", LoginUsuarioController.loginUsuario);
 
-// Rota para criar um novo usuário
-router.post("/cadastrar", UsuarioController.criarUsuario);
-// Rota para listar os usuários
-router.get("/listar", UsuarioController.mostrarUsuarios);
-// Rota para ver um usuario especifico
-router.get("/buscar/:codigo", UsuarioController.mostrarUsuarioEspecifico);
-// Rota para editar um usuário
-router.put("/editar/:codigo", UsuarioController.editarUsuario);
-// Rota para deletar um usuário
-router.delete("/deletar/:codigo", UsuarioController.deletarUsuario);
 export default router;
