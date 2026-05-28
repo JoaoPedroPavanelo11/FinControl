@@ -12,19 +12,30 @@ class UsuarioController {
                 ...req.body,
                 codigo: novoCodigo
             });
+            const usuarioSemSenha = criarUsuario.toObject();
+            delete usuarioSemSenha.senha;
             res.status(200).json({message: "Usuário criado com sucesso!", criarUsuario});
         }catch(error){
-            res.status(400).json({message: "Erro ao criar usuário!", error});
+            const erros = Object.values(error.errors).map((err) => err.message);
+            res.status(400).json({
+                message: "Erro ao criar usuário!",
+                erros
+            })
         };
     };
 
     // Listar Usuarios
     static async mostrarUsuarios(req, res){
         try{
-            const mostrarUsuarios = await Usuario.find();
+            // O select("-senha") é para não mostrar a senha dos usuarios, por questão de segurança
+            const mostrarUsuarios = await Usuario.find().select("-senha");
             res.status(200).json({message: "Usuários encontrados com sucesso!", mostrarUsuarios});
         }catch(error){
-            res.status(400).json({message: "Erro ao encontrar usuários!", error});
+            const erros = Object.values(error.errors).map((err) => err.message);
+            res.status(400).json({
+                message: "Erro ao listar usuários!",
+                erros
+            })
         };
     };
     static async mostrarUsuarioEspecifico(req, res){
@@ -33,7 +44,11 @@ class UsuarioController {
             const mostrarUsuarioEspecifico = await Usuario.findOne({ codigo });
             res.status(200).json({message: "Usuário encontrado com sucesso!", mostrarUsuarioEspecifico});
         }catch(error){
-            res.status(400).json({message: "Erro ao encontrar usuário!", error});
+            const erros = Object.values(error.errors).map((err) => err.message);
+            res.status(400).json({
+                message: "Erro ao encontrar usuário!",
+                erros
+            });
         };
     };
 
@@ -44,7 +59,11 @@ class UsuarioController {
             const editarUsuario = await Usuario.findOneAndUpdate({ codigo }, req.body, { new: true });
             res.status(200).json({message: "Usuario editado!", editarUsuario});
         }catch(error){  
-            res.status(400).json({message: "Erro ao editar usuário!", error});
+            const erros = Object.values(error.errors).map((err) => err.message);
+            res.status(400).json({
+                message: "Erro ao editar usuário!",
+                erros
+            });
         };
     };
 
@@ -59,7 +78,11 @@ class UsuarioController {
                 res.status(200).json({message: "Usuário deletado com sucesso!"});
             }
         }catch(error){
-            res.status(400).json({message: "Erro ao deletar usuário!", error});
+            const erros = Object.values(error.errors).map((err) => err.message);
+            res.status(400).json({
+                message: "Erro ao deletar usuário!",
+                erros
+            });
         }
     }
 };
