@@ -1,30 +1,6 @@
 import Usuario from "../models/usuario.js";
 
 class AdminController {
-    static async verificarAdmin(req, res, next) {
-        try {
-            const adminId = req.headers["x-admin-id"];
-
-            if (!adminId) {
-                return res.status(401).json({ message: "Informe o id do admin no header x-admin-id!" });
-            }
-
-            const admin = await Usuario.findById(adminId);
-
-            if (!admin || admin.rule !== "admin") {
-                return res.status(403).json({ message: "Apenas administradores podem executar essa acao!" });
-            }
-
-            req.admin = admin;
-            next();
-        } catch (error) {
-            res.status(400).json({
-                message: "Erro ao validar administrador!",
-                erro: error.message
-            });
-        }
-    };
-
     static async mostrarTodosUsuarios(req, res) {
         try {
             const mostrarTodosUsuarios = await Usuario.find();
@@ -41,28 +17,27 @@ class AdminController {
 
     static async deletarUsuario(req, res) {
         try {
-            const { id } = req.params;
-            const deletarUsuario = await Usuario.findByIdAndDelete(id);
+            const { codigo } = req.params;
+            const deletarUsuario = await Usuario.findOneAndDelete({ codigo: Number(codigo) });
             res.status(200).json({ message: "Usuário deletado com sucesso!", deletarUsuario });
         } catch (error) {
             const erros = Object.values(error.errors).map((err) => err.message);
             res.status(400).json({
-                message: "Erro ao mostrar Usuarios!",
+                message: "Erro ao deletar usuário!",
                 erros
             });
         }
     };
-
     static async atualizarUsuario(req, res) {
         try {
-            const { id } = req.params;
+            const { codigo } = req.params;
             const { rule, ...dadosUsuario } = req.body;
-            const atualizarUsuario = await Usuario.findByIdAndUpdate(id, dadosUsuario, { new: true, runValidators: true });
+            const atualizarUsuario = await Usuario.findOneAndUpdate({ codigo: Number(codigo) }, dadosUsuario, { new: true, runValidators: true });
             res.status(200).json({ message: "Usuário atualizado com sucesso!", atualizarUsuario });
         } catch (error) {
             const erros = Object.values(error.errors).map((err) => err.message);
             res.status(400).json({
-                message: "Erro ao mostrar Usuarios!",
+                message: "Erro ao atualizar usuário!",
                 erros
             });
         }
@@ -70,11 +45,11 @@ class AdminController {
 
     static async atribuirRuleUsuario(req, res) {
         try {
-            const { id } = req.params;
+            const { codigo } = req.params;
             const { rule } = req.body;
 
-            const usuarioAtualizado = await Usuario.findByIdAndUpdate(
-                id,
+            const usuarioAtualizado = await Usuario.findOneAndUpdate(
+                { codigo: Number(codigo) },
                 { rule },
                 { new: true, runValidators: true }
             );
@@ -99,5 +74,6 @@ class AdminController {
         }
     };
 };
+
 
 export default AdminController;

@@ -3,11 +3,9 @@ import AdminController from "../controller/AdminController.js";
 
 const router = express.Router();
 
-router.use(AdminController.verificarAdmin);
-
 router.get("/usuarios", AdminController.mostrarTodosUsuarios);
-router.put("/usuarios/:id", AdminController.atualizarUsuario);
-router.patch("/usuarios/:id/rule", AdminController.atribuirRuleUsuario);
-router.delete("/usuarios/:id", AdminController.deletarUsuario);
+router.put("/usuarios/:codigo", AdminController.atualizarUsuario);
+router.patch("/usuarios/:codigo/rule", AdminController.atribuirRuleUsuario);
+router.delete("/usuarios/:codigo", AdminController.deletarUsuario);
 
 export default router;
