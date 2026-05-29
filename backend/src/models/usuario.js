@@ -5,6 +5,12 @@ const usuarioSchema = new mongoose.Schema({
         type: Number,
         unique: true
     },
+    rule: {
+        type: String,
+        enum: ["admin", "user"],
+        default: "user",
+        required: true
+    },
     nome: {
         type: String,
         required: [true, "Nome obrigatorio!"],
