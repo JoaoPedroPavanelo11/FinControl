@@ -8,8 +8,8 @@ const routers = (app) =>{
         res.status(200).json({message: "Bem vindo a FinControll"});
     })
     app.use("/usuarios", UsuarioRouter);
+    app.use("/usuarios", ContaBancariaRouter);
     app.use("/admin", AdminRouter);
-    app.use("/contas-bancarias", ContaBancariaRouter);
 };
 
 export default routers;
