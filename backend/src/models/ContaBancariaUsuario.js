@@ -23,5 +23,5 @@ const contaBancariaUsuarioSchema = new mongoose.Schema({
     }
 })
 
-const ContaBancariaUsuario = mongoose.models.ContaBancariUsuario || mongoose.model("ContaBancariUsuario", contaBancariaUsuarioSchema);
+const ContaBancariaUsuario = mongoose.models.ContaBancariaUsuario || mongoose.model("ContaBancariaUsuario", contaBancariaUsuarioSchema);
 export default ContaBancariaUsuario;
